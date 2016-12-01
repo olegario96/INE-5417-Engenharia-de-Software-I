@@ -1,9 +1,14 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Jogador {
+public class Jogador implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6464342001908889999L;
 	private String _nome;
 	private int id;
 	private boolean _seu_turno;
@@ -77,7 +82,8 @@ public class Jogador {
 		this._seu_turno = aM_seu_turno;
 	}
 
-	public void adicionarMonstroDestruido() {
+	public void adicionarMonstroDestruido(Monstro monstro) {
+		this._monstros.remove(monstro);
 		++(this._monstrosDestruidos);
 		this.avaliaPontosDeVida();
 	}

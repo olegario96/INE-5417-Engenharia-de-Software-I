@@ -11,7 +11,6 @@ import modelo.*;
 
 public class AtorJogador {
 	private int ordemUsuario;
-	private boolean conectado;
 	private AtorNetGames atorNetGames;
 	private Tabuleiro tabuleiro;
 	private Jogador jogador_1;
@@ -23,7 +22,6 @@ public class AtorJogador {
 	}
 
 	public void iniciarPartida(Integer posicao) throws NaoJogandoException {
-		this.conectado = true;
 		String nome_p1 = this.atorNetGames.getProxy().obterNomeAdversario(1);
 		String nome_p2 = this.atorNetGames.getProxy().obterNomeAdversario(2);
 
@@ -66,13 +64,8 @@ public class AtorJogador {
 		Monstro monstro_alvo = posicao.getOcupante();
 		Monstro destruido = this.comparaAtaqueMonstros(monstro, monstro_alvo);
 
-		Jogador invocador = destruido.getInvocador();
 		destruido.destruirMonstro();
-		if (invocador.compara(this.getJogador1())) {
-			this.getJogador1().adicionarMonstroDestruido();
-		} else {
-			this.getId2().adicionarMonstroDestruido();
-		}
+		
 		this.jogada = new Jogada(posicao.getLinha(), posicao.getLinha(),
 				TipoJogada._atacar, monstro, monstro_alvo, null);
 
@@ -162,8 +155,9 @@ public class AtorJogador {
 			break;
 
 		case _moverMonstro:
-			posicao = new Posicao(null, jogada.getLinha(), jogada.getColuna());
-			this.clickMoveMonstro(monstro_fonte, posicao);
+			posicao = this.tabuleiro.getPosicao(jogada.getLinha(), jogada.getColuna());
+			monstro_fonte.setJaMoveu(true);
+			this.tabuleiro.movimentaMonstro(monstro_fonte, posicao);
 			JanelaPrincipal.atualizarInformacoes();
 			break;
 
@@ -174,7 +168,12 @@ public class AtorJogador {
 
 		case _invocarMonstro:
 			posicao = new Posicao(null, jogada.getLinha(), jogada.getColuna());
-			this.clickInvocarMonstro(monstro_fonte, posicao);
+			this.tabuleiro.invocaMonstro(monstro_fonte, posicao);
+			monstro_fonte.setInvocador(jogador_2);
+			monstro_fonte.getInvocador().adicionaMonstro(monstro_fonte);
+			
+
+			monstro_fonte.getInvocador().diminuiEstrelas(monstro_fonte.estrelasParaInvocacao());
 			JanelaPrincipal.atualizarInformacoes();
 			break;
 
@@ -195,12 +194,8 @@ public class AtorJogador {
 		return this.jogador_1;
 	}
 
-	public Jogador getId2() {
-		if (jogador_1.getId() == 2) {
-			return jogador_1;
-		} else {
-			return jogador_2;
-		}
+	public Jogador getJogador2() {
+		return this.jogador_2;
 	}
 
 	public AtorNetGames getAtorNetGames() {
@@ -218,16 +213,21 @@ public class AtorJogador {
 		monstro.setJaMoveu(true);
 		this.jogada = new Jogada(posicao.getLinha(), posicao.getColuna(),
 				TipoJogada._moverMonstro, monstro, null, null);
-		monstro.getInvocador().diminuiEstrelas(monstro.estrelasParaMovimento());
 		this.atorNetGames.enviarJogada(jogada);
+		this.tabuleiro.movimentaMonstro(monstro, posicao);
+		monstro.getInvocador().diminuiEstrelas(monstro.estrelasParaMovimento());
+		
 	}
 
 	public void clickInvocarMonstro(Monstro monstro, Posicao posicao)
 			throws NaoJogandoException {
+		
+		posicao.setOcupante(monstro);
 		monstro.setPosicao(posicao);
+		monstro.setInvocador(jogador_1);
 		monstro.getInvocador().adicionaMonstro(monstro);
 		this.jogada = new Jogada(posicao.getLinha(), posicao.getColuna(),
-				TipoJogada._moverMonstro, monstro, null, null);
+				TipoJogada._invocarMonstro, monstro, null, null);
 
 		monstro.getInvocador().diminuiEstrelas(monstro.estrelasParaInvocacao());
 		this.atorNetGames.enviarJogada(jogada);

@@ -60,14 +60,11 @@ public class Tabuleiro {
 	}
 
 	public Jogada invocaMonstro(Monstro aMonstro, Posicao posicao) {
-		for (int i = 0; i < posicoes.length; i++) {
-			for (int j = 0; j < posicoes.length; j++) {
-				if ((posicoes[i][j].equals(posicao))) {
-					posicoes[i][j].setOcupante(aMonstro);
-					break;
-				}
-			}
-		}
+		int linha = posicao.getLinha();
+		int coluna = posicao.getColuna();
+		posicoes[linha][coluna].setOcupante(aMonstro);
+		aMonstro.setPosicao(posicoes[linha][coluna]);
+
 		return (new Jogada(posicao.getLinha(), posicao.getColuna(),
 				TipoJogada._invocarMonstro, aMonstro, null, null));
 	}
@@ -83,8 +80,8 @@ public class Tabuleiro {
 	public Jogada movimentaMonstro(Monstro aMonstro, Posicao posicao) {
 		aMonstro.getPosicao().setOcupante(null);
 		posicao.setOcupante(aMonstro);
-		
-		return (new Jogada(posicao.getLinha(), posicao.getColuna(), 
+		aMonstro.setPosicao(posicao);
+		return (new Jogada(posicao.getLinha(), posicao.getColuna(),
 				TipoJogada._moverMonstro, aMonstro, null, null));
 	}
 
@@ -97,14 +94,14 @@ public class Tabuleiro {
 		switch (jogada) {
 		case _rolar_dados:
 			break;
-		
+
 		case _atacar:
-			
+
 			break;
 
 		case _moverMonstro:
 			break;
-			
+
 		case _usarHabilidade:
 		}
 	}
@@ -118,7 +115,7 @@ public class Tabuleiro {
 		this.posicoes = new Posicao[8][8];
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				posicoes[i][j] = new Posicao(null, i, i);
+				posicoes[i][j] = new Posicao(null, i, j);
 			}
 		}
 		this._partida_em_andamento = true;
@@ -143,8 +140,12 @@ public class Tabuleiro {
 			this.identificaVencedor();
 		}
 	}
-	
+
 	public boolean partidaEmAndamento() {
 		return this._partida_em_andamento;
+	}
+
+	public Posicao getPosicao(int linha, int coluna) {
+		return this.posicoes[linha][coluna];
 	}
 }

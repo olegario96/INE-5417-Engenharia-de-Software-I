@@ -20,14 +20,16 @@ public class JanelaEscolha {
 
 	private JFrame frame;
 	private Monstro monstro;
+	private JanelaPrincipal janela;
 
 	/**
 	 * Create the application.
 	 */
-	public JanelaEscolha() {
+	public JanelaEscolha(JanelaPrincipal janela) {
 		this.monstro = null;
 		initialize();
 		this.frame.setVisible(true);
+		this.janela = janela;
 	}
 
 	/**
@@ -42,8 +44,11 @@ public class JanelaEscolha {
 		JButton abakiButton = new JButton("");
 		abakiButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				monstro = new Monstro(1, null, 3, 2, 1, null, 0, 1);
+				monstro = new Monstro(1, null, 3, 2, 1, null, 1);
+				
 				frame.dispose();
+				janela.setMonstro(monstro);
+				janela.clickInvMonstro();
 			}
 		});
 		abakiButton.setIcon(new ImageIcon("/home/olegario/workspace/MonstrosDosDadosMasmorra/Resources/abaki.png"));
@@ -52,8 +57,10 @@ public class JanelaEscolha {
 		JButton agidoButton = new JButton("");
 		agidoButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				monstro = new Monstro(2, null, 5, 2, 2, null, 0, 2);
+				monstro = new Monstro(2, null, 5, 2, 2, null, 2);
 				frame.dispose();
+				janela.setMonstro(monstro);
+				janela.clickInvMonstro();
 			}
 		});
 		agidoButton.setIcon(new ImageIcon("/home/olegario/workspace/MonstrosDosDadosMasmorra/Resources/agido.png"));
@@ -62,8 +69,10 @@ public class JanelaEscolha {
 		JButton airEaterButton = new JButton("");
 		airEaterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				monstro = new Monstro_Com_Habilidade(2, null, 5, 2, 2, null, 0, 3, TipoJogada._moverMonstro);
+				monstro = new Monstro_Com_Habilidade(2, null, 5, 2, 2, null, 3, TipoJogada._moverMonstro);
 				frame.dispose();
+				janela.setMonstro(monstro);
+				janela.clickInvMonstro();
 			}
 		});
 		airEaterButton.setIcon(new ImageIcon("/home/olegario/workspace/MonstrosDosDadosMasmorra/Resources/air_eater.png"));
@@ -72,8 +81,10 @@ public class JanelaEscolha {
 		JButton airorcaButton = new JButton("");
 		airorcaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				monstro = new Monstro(2, null, 2, 3, 1, null, 0, 4);
+				monstro = new Monstro(1, null, 3, 2, 1, null, 4);
 				frame.dispose();
+				janela.setMonstro(monstro);
+				janela.clickInvMonstro();
 			}
 		});
 		airorcaButton.setIcon(new ImageIcon("/home/olegario/workspace/MonstrosDosDadosMasmorra/Resources/airorca.png"));
@@ -82,8 +93,10 @@ public class JanelaEscolha {
 		JButton the13thGraveButton = new JButton("");
 		the13thGraveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				monstro = new Monstro_Com_Habilidade(3, null, 6, 2, 3, null, 0, 5, TipoJogada._rolar_dados);
+				monstro = new Monstro_Com_Habilidade(3, null, 6, 2, 3, null, 5, TipoJogada._rolar_dados);
 				frame.dispose();
+				janela.setMonstro(monstro);
+				janela.clickInvMonstro();
 			}
 		});
 		
@@ -94,8 +107,10 @@ public class JanelaEscolha {
 		whiteDragonButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				monstro = new Monstro_Com_Habilidade(3, null, 7, 2, 3, null, 0, 6, TipoJogada._atacar);
+				monstro = new Monstro_Com_Habilidade(3, null, 7, 2, 3, null, 6, TipoJogada._atacar);
 				frame.dispose();
+				janela.setMonstro(monstro);
+				janela.clickInvMonstro();
 			}
 		});
 		

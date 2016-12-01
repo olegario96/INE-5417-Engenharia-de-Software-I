@@ -1,7 +1,12 @@
 package modelo;
+import java.io.Serializable;
 import java.util.Random;
 
-public class Dado {
+public class Dado implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6251163733923934772L;
 	private int _face_atual;
 
 	public Dado() {

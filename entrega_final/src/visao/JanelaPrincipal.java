@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.QuadCurve2D;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 import modelo.Dado;
 import modelo.Monstro;
@@ -44,17 +46,18 @@ public class JanelaPrincipal {
 	private static JButton btnAtacar;
 	private static JButton btnUsarHabilidade;
 	private static JButton btnEncerrarJogada;
+	private static JLabel lblNumeroEstrelas;
 	private JMenuBar menuBar;
 	private JMenu mnJogo;
 	private JMenuItem mntmConectar;
 	private JMenuItem mntmDesconectar;
 	private JMenuItem mntmIniciarPartida;
 	private JPanel panel;
-	private Casa lblquadrante[][];
+	private static Casa lblquadrante[][];
 	private JLabel hearts_p1[];
 	private JLabel hearts_p2[];
 
-	private AtorJogador atorJogador;
+	private static AtorJogador atorJogador;
 	private int type;
 	Monstro monstro = null;
 	TipoJogada tipoJogada;
@@ -120,6 +123,10 @@ public class JanelaPrincipal {
 
 		this.mntmIniciarPartida = new JMenuItem("Iniciar partida");
 		mnJogo.add(mntmIniciarPartida);
+		
+		this.lblNumeroEstrelas = new JLabel("Numero estrelas: 0");
+		lblNumeroEstrelas.setBounds(26, 127, 159, 34);
+		frame.getContentPane().add(lblNumeroEstrelas);
 	}
 
 	/**
@@ -152,7 +159,7 @@ public class JanelaPrincipal {
 				}
 				this.lblquadrante[i][j].setOpaque(true);
 				panel.add(this.lblquadrante[i][j]);
-				lblquadrante[i][j].addMouseListener(meulistenerdobuta1);
+				lblquadrante[i][j].addMouseListener(meulistener);
 			}
 		}
 
@@ -333,26 +340,22 @@ public class JanelaPrincipal {
 	}
 
 	public void clickInvocarMonstro() {
-		boolean clicked = false;
-		JanelaEscolha janela = new JanelaEscolha();
-		int estrelas = this.atorJogador.getJogador1().getEstrelas();
-		while (clicked == false) {
-			try {
-				monstro = janela.getMonstro();
-				if (estrelas < monstro.estrelasParaInvocacao()) {
-					this.informaInsuficienciaEstrela();
-				} else {
-					JOptionPane
-							.showMessageDialog(null,
-									"Agora a escolha a casa qeu você quer invocar o monstro!");
-					type = 2;
-				}
-				clicked = true;
-			} catch (NullPointerException e) {
-				clicked = false;
-			}
-		}
+		new JanelaEscolha(this);
+	}
+	
+	public void setMonstro(Monstro monstro) {
+		this.monstro = monstro;
+	}
 
+	public void clickInvMonstro() {
+		int estrelas = this.atorJogador.getJogador1().getEstrelas();
+		if (estrelas < monstro.estrelasParaInvocacao()) {
+			this.informaInsuficienciaEstrela();
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"Agora a escolha a casa qeu você quer invocar o monstro!");
+			tipoJogada = TipoJogada._invocarMonstro;
+		}
 	}
 
 	public Monstro mostraMonstro() {
@@ -373,11 +376,27 @@ public class JanelaPrincipal {
 	}
 
 	public static void atualizarInformacoes() {
-
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Posicao posicao = atorJogador.getTabuleiro().getPosicao(i, j);
+				if (!posicao.casaVazia()) {
+					String text = Integer.toString(posicao.getOcupante()
+							.getInvocador().getId());
+					text = "\u001B[31m" + text + "\u001B[0m";
+					lblquadrante[i][j].setText(text);
+				} else {
+					lblquadrante[i][j].setText("");
+				}
+			}
+		}
+		
+		String text = "Numero estrelas: " +  Integer.toString((atorJogador.getJogador1().getEstrelas()));
+		lblNumeroEstrelas.setText(text);;
 	}
+	
 
 	public void clickRolarDados() throws NaoJogandoException {
-		Dado[] dados = this.atorJogador.clickRolarDados();
+		Dado[] dados = atorJogador.clickRolarDados();
 		if (dados == null) {
 			JOptionPane.showMessageDialog(null,
 					"Você já rolou os dados nesta rodada!");
@@ -388,6 +407,7 @@ public class JanelaPrincipal {
 							+ dados[0].getFaceAtual() + " "
 							+ dados[1].getFaceAtual() + " "
 							+ dados[2].getFaceAtual());
+			atualizarInformacoes();
 		}
 	}
 
@@ -509,7 +529,7 @@ public class JanelaPrincipal {
 		}
 	}
 
-	private MouseListener meulistenerdobuta1 = new MouseListener() {
+	private MouseListener meulistener = new MouseListener() {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
@@ -537,7 +557,7 @@ public class JanelaPrincipal {
 		public void mouseClicked(MouseEvent e) {
 			int linha = ((Casa) e.getSource()).getLinha();
 			int coluna = ((Casa) e.getSource()).getColuna();
-			Posicao posicao = new Posicao(null, linha, coluna);
+			Posicao posicao = atorJogador.getTabuleiro().getPosicao(linha, coluna);
 			switch (tipoJogada) {
 			case _atacar:
 				aoAtacar(posicao);
@@ -556,7 +576,7 @@ public class JanelaPrincipal {
 					aoClicar_mover(posicao);
 				} else if (type == 2) {
 					aoClicar_atacar(posicao);
-					;
+					
 				} else if (type == 3) {
 					try {
 						aoClicar_usarHabilidade(posicao);
@@ -587,7 +607,7 @@ public class JanelaPrincipal {
 						"O alvo está muito longe do monstro!");
 			}
 		}
-		tipoJogada = null;
+		tipoJogada = TipoJogada._clickMonstro;
 	}
 
 	private void aoMover(Posicao posicao) {
@@ -606,7 +626,8 @@ public class JanelaPrincipal {
 						"O alvo está muito longe do monstro!");
 			}
 		}
-		tipoJogada = null;
+		tipoJogada = TipoJogada._clickMonstro;
+
 	}
 
 	private void aoInvocar(Posicao posicao) {
@@ -620,14 +641,14 @@ public class JanelaPrincipal {
 			}
 			atualizarInformacoes();
 		}
-		tipoJogada = null;
+		tipoJogada = TipoJogada._clickMonstro;
 	}
 
 	private void aoClicar_mover(Posicao posicao) {
 		if (posicao.casaVazia()) {
 			JOptionPane.showMessageDialog(null, "Esta casa está vazia!");
 		} else {
-			if ((posicao.getOcupante().getInvocador().compara(this.atorJogador
+			if (!(posicao.getOcupante().getInvocador().compara(this.atorJogador
 					.getJogador1()))) {
 				JOptionPane.showMessageDialog(null,
 						"Este mostro não pertence a você!");
@@ -641,7 +662,7 @@ public class JanelaPrincipal {
 						this.informaInsuficienciaEstrela();
 					} else {
 						JOptionPane.showMessageDialog(null,
-								"Clique na casa que você deseja atacar!");
+								"Clique na casa que você deseja mover!");
 						tipoJogada = TipoJogada._moverMonstro;
 					}
 				}
@@ -697,5 +718,4 @@ public class JanelaPrincipal {
 			}
 		}
 	}
-
 }

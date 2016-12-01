@@ -1,6 +1,16 @@
 package modelo;
 
-public class Posicao {
+import java.io.Serializable;
+
+public class Posicao implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6576237270596288427L;
+	/**
+	 * 
+	 */
 
 	private Monstro _ocupante;
 	private int linha;

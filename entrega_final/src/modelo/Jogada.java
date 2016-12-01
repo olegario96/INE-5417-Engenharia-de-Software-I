@@ -1,6 +1,8 @@
 package modelo;
 
-public class Jogada implements br.ufsc.inf.leobr.cliente.Jogada {
+import java.io.Serializable;
+
+public class Jogada implements br.ufsc.inf.leobr.cliente.Jogada, Serializable {
 
 	private static final long serialVersionUID = 4797097674463485934L;
 	
