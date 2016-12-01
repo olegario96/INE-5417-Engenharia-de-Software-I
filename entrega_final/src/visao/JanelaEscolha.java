@@ -25,8 +25,8 @@ public class JanelaEscolha {
 	 * Create the application.
 	 */
 	public JanelaEscolha() {
-		initialize();
 		this.monstro = null;
+		initialize();
 		this.frame.setVisible(true);
 	}
 
@@ -93,7 +93,7 @@ public class JanelaEscolha {
 		JButton whiteDragonButton = new JButton("");
 		whiteDragonButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				aoClicar(6);
+				
 				monstro = new Monstro_Com_Habilidade(3, null, 7, 2, 3, null, 0, 6, TipoJogada._atacar);
 				frame.dispose();
 			}
@@ -101,9 +101,10 @@ public class JanelaEscolha {
 		
 		whiteDragonButton.setIcon(new ImageIcon("/home/olegario/workspace/MonstrosDosDadosMasmorra/Resources/white_dragon.png"));
 		frame.getContentPane().add(whiteDragonButton);
-		while (monstro == null);
+		
 	}
 	
-	public 
-
+	public Monstro getMonstro() {
+		return this.monstro;
+	}
 }
