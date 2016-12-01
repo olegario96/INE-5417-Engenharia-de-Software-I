@@ -21,6 +21,10 @@ public class Monstro_Com_Habilidade extends Monstro {
 			return "Permite ao jogador rolar os dados mais uma vez";
 		}
 	}
+	
+	public TipoJogada getHabilidade() {
+		return this._habilidade;
+	}
 
 	@Override
 	public void reiniciaMonstro() {

@@ -23,6 +23,9 @@ public class Jogador {
 		this._monstros = new ArrayList<Monstro>();
 		this.numero_monstros = 0;
 		this.id = id;
+		this._seu_turno = false;
+		this._ja_rolou_dados = false; 
+		this._vencedor = false;
 	}
 
 	public TipoJogada darAVez() {
@@ -36,6 +39,10 @@ public class Jogador {
 		for (Monstro m : _monstros) {
 			m.reiniciaMonstro();
 		}
+	}
+	
+	public void setDados(boolean dados) {
+		this._ja_rolou_dados = dados;
 	}
 
 	public void resetarDados() {

@@ -17,6 +17,7 @@ public class AtorNetGames implements OuvidorProxy {
 	private AtorJogador atorJogador;
 
 	public AtorNetGames(AtorJogador atorJogador) {
+		super();
 		this.atorJogador = atorJogador;
 		this.proxy = Proxy.getInstance();
 	}
@@ -67,7 +68,12 @@ public class AtorNetGames implements OuvidorProxy {
 
 	@Override
 	public void receberJogada(Jogada jogada) {
-		atorJogador.receberJogada((modelo.Jogada) jogada);
+		try {
+			atorJogador.receberJogada((modelo.Jogada) jogada);
+		} catch (NaoJogandoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void enviarJogada(modelo.Jogada jogada) throws NaoJogandoException {
