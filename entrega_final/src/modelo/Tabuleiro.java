@@ -80,11 +80,17 @@ public class Tabuleiro {
 	public Jogada movimentaMonstro(Monstro aMonstro, Posicao posicao) {
 		Posicao antiga = this.getPosicao(aMonstro.getPosicao().getLinha(), aMonstro.getPosicao().getColuna());
 		antiga.setOcupante(null);
-		aMonstro.getPosicao().setOcupante(null);
 		posicao.setOcupante(aMonstro);
 		aMonstro.setPosicao(posicao);
 		return (new Jogada(posicao.getLinha(), posicao.getColuna(),
 				TipoJogada._moverMonstro, aMonstro, null, null));
+	}
+	
+	public void destroiMonstro(Monstro monstro, Posicao posicao) {
+		posicao.setOcupante(null);
+		monstro.setPosicao(null);
+		Jogador invocador = monstro.getInvocador();
+		invocador.adicionarMonstroDestruido(monstro);
 	}
 
 	public boolean getConectado() {

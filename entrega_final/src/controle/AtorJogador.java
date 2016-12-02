@@ -72,10 +72,10 @@ public class AtorJogador {
 			JOptionPane.showMessageDialog(null, "Os dois monstros possuem o mesmo poder\n"
 											  + "de ataque. Nenhum monstro foi destruído.");
 		} else {
-			destruido.destruirMonstro();
+			tabuleiro.destroiMonstro(destruido, destruido.getPosicao());
 		}
 		
-		this.jogada = new Jogada(posicao.getLinha(), posicao.getLinha(),
+		this.jogada = new Jogada(posicao.getLinha(), posicao.getColuna(),
 				TipoJogada._atacar, monstro, monstro_alvo, null);
 		monstro.setJa_atacou(true);
 		this.enviarJogada(jogada);
@@ -162,8 +162,7 @@ public class AtorJogador {
 			posicao = this.tabuleiro.getPosicao(jogada.getLinha(), jogada.getColuna());
 			Monstro monstro_alvo = posicao.getOcupante();
 			Monstro destruido = this.comparaAtaqueMonstros(monstro_fonte, monstro_alvo);
-
-			destruido.destruirMonstro();
+			tabuleiro.destroiMonstro(destruido, destruido.getPosicao());
 			JanelaPrincipal.atualizarInformacoes();
 			break;
 
