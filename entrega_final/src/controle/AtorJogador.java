@@ -25,18 +25,23 @@ public class AtorJogador {
 		String nome_p1 = this.atorNetGames.getProxy().obterNomeAdversario(1);
 		String nome_p2 = this.atorNetGames.getProxy().obterNomeAdversario(2);
 
-		this.jogador_1 = new Jogador(nome_p1, 1);
-		this.jogador_2 = new Jogador(nome_p2, 2);
 		if (posicao == 1) {
+			this.jogador_1 = new Jogador(nome_p1, 1);
+			this.jogador_2 = new Jogador(nome_p2, 2);
 			ordemUsuario = 1;
 			this.jogador_1.setSeu_turno(true);
+			this.jogador_2.setSeu_turno(false);
 		} else {
 			ordemUsuario = 2;
+			this.jogador_1 = new Jogador(nome_p1, 2);
+			this.jogador_2 = new Jogador(nome_p2, 1);
 			this.jogador_1.setSeu_turno(false);
+			this.jogador_2.setSeu_turno(true);
 			this.receberSolicitacaoDeInicio();
 		}
-		this.jogador_2.setSeu_turno(false);
+		
 		this.tabuleiro = new Tabuleiro(jogador_1, jogador_2);
+		JOptionPane.showMessageDialog(null, "A partida começou!");
 	}
 
 	public void receberSolicitacaoDeInicio() {
@@ -48,7 +53,7 @@ public class AtorJogador {
 		if (ordemUsuario == 2) {
 			JanelaPrincipal.disableButtons();
 		}
-		JOptionPane.showMessageDialog(null, "A partida começou!");
+		
 	}
 
 	public void clickConectar(String ip, String nome)
@@ -148,9 +153,11 @@ public class AtorJogador {
 		Posicao posicao;
 		switch (jogada.getTipoJogada()) {
 		case _atacar:
-			posicao = new Posicao(jogada.getMonstroAlvo(), jogada.getLinha(),
-					jogada.getColuna());
-			this.clickAtacar(monstro_fonte, posicao);
+			posicao = this.tabuleiro.getPosicao(jogada.getLinha(), jogada.getColuna());
+			Monstro monstro_alvo = posicao.getOcupante();
+			Monstro destruido = this.comparaAtaqueMonstros(monstro_fonte, monstro_alvo);
+
+			destruido.destruirMonstro();
 			JanelaPrincipal.atualizarInformacoes();
 			break;
 
@@ -167,7 +174,7 @@ public class AtorJogador {
 			break;
 
 		case _invocarMonstro:
-			posicao = new Posicao(null, jogada.getLinha(), jogada.getColuna());
+			posicao = this.tabuleiro.getPosicao(jogada.getLinha(), jogada.getColuna());
 			this.tabuleiro.invocaMonstro(monstro_fonte, posicao);
 			monstro_fonte.setInvocador(jogador_2);
 			monstro_fonte.getInvocador().adicionaMonstro(monstro_fonte);

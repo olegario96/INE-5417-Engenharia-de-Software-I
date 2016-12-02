@@ -78,6 +78,8 @@ public class Tabuleiro {
 	}
 
 	public Jogada movimentaMonstro(Monstro aMonstro, Posicao posicao) {
+		Posicao antiga = this.getPosicao(aMonstro.getPosicao().getLinha(), aMonstro.getPosicao().getColuna());
+		antiga.setOcupante(null);
 		aMonstro.getPosicao().setOcupante(null);
 		posicao.setOcupante(aMonstro);
 		aMonstro.setPosicao(posicao);

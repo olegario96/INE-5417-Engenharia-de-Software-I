@@ -309,11 +309,12 @@ public class JanelaPrincipal {
 
 	public void iniciarPartida() throws NaoConectadoException {
 		this.atorJogador.getAtorNetGames().iniciarPartida();
-		setNomeLabel1(atorJogador.getAtorNetGames().getProxy()
-				.obterNomeAdversario(1));
-		setNomeLabel2(atorJogador.getAtorNetGames().getProxy()
-				.obterNomeAdversario(2));
+		
 		if (!(this.atorJogador.getJogador1().getSeuTurno())) {
+			setNomeLabel1(atorJogador.getAtorNetGames().getProxy()
+					.obterNomeAdversario(1));
+			setNomeLabel2(atorJogador.getAtorNetGames().getProxy()
+					.obterNomeAdversario(2));
 			disableButtons();
 		}
 		JOptionPane.showMessageDialog(null, "A partida começou!");
@@ -323,8 +324,9 @@ public class JanelaPrincipal {
 		if (!(this.atorJogador.getJogador1().possuiMonstro())) {
 			this.informaSemMonstro();
 		} else {
+			type = 2;
 			JOptionPane.showMessageDialog(null,
-					"Clique no monstro que você quer atacar");
+					"Clique no monstro com que você quer atacar");
 
 		}
 	}
@@ -353,7 +355,7 @@ public class JanelaPrincipal {
 			this.informaInsuficienciaEstrela();
 		} else {
 			JOptionPane.showMessageDialog(null,
-					"Agora a escolha a casa qeu você quer invocar o monstro!");
+					"Agora a escolha a casa que você quer invocar o monstro!");
 			tipoJogada = TipoJogada._invocarMonstro;
 		}
 	}

@@ -48,6 +48,8 @@ public class Monstro implements Serializable {
 	}
 
 	public void destruirMonstro() {
+		this.getPosicao().setOcupante(null);
+		this.setPosicao(null);
 		Jogador jogador = this.getInvocador();
 		jogador.adicionarMonstroDestruido(this);
 	}
