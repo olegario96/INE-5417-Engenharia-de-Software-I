@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import modelo.Dado;
+import modelo.Jogador;
 import modelo.Monstro;
 import modelo.Monstro_Com_Habilidade;
 import modelo.Posicao;
@@ -52,8 +53,8 @@ public class JanelaPrincipal {
 	private JMenuItem mntmIniciarPartida;
 	private JPanel panel;
 	private static Casa lblquadrante[][];
-	private JLabel hearts_p1[];
-	private JLabel hearts_p2[];
+	private static JLabel hearts_p1[];
+	private static JLabel hearts_p2[];
 
 	private static AtorJogador atorJogador;
 	private int type;
@@ -165,14 +166,13 @@ public class JanelaPrincipal {
 		this.hearts_p2 = new JLabel[3];
 		int desloc_1 = 0;
 		int desloc_2 = 400;
-		String path = "/home/olegario/workspace/MonstrosDosDadosMasmorra/Resources/heartcontainer.gif";
 
 		for (int i = 0; i < hearts_p1.length; i++) {
 			hearts_p1[i] = new JLabel();
 			hearts_p2[i] = new JLabel();
 
-			hearts_p1[i].setIcon(new ImageIcon(path));
-			hearts_p2[i].setIcon(new ImageIcon(path));
+			hearts_p1[i].setIcon(new ImageIcon(".\\resources\\heartcontainer.gif"));
+			hearts_p2[i].setIcon(new ImageIcon(".\\resources\\heartcontainer.gif"));
 
 			hearts_p1[i].setBounds(24 + desloc_1, 60, 64, 60);
 			hearts_p2[i].setBounds(24 + desloc_2, 60, 64, 60);
@@ -391,9 +391,26 @@ public class JanelaPrincipal {
 		}
 		
 		String text = "Numero estrelas: " +  Integer.toString((atorJogador.getJogador1().getEstrelas()));
-		lblNumeroEstrelas.setText(text);;
+		lblNumeroEstrelas.setText(text);
+		
+		atualizaPontosDeVida();
+		
 	}
 	
+	public static void atualizaPontosDeVida() {
+		for (int i = 0; i < 3; i++) {
+			if (i < atorJogador.getJogador1().getPontosDeVida())
+				hearts_p1[i].setIcon(new ImageIcon(".\\resources\\heartcontainer.gif"));
+			else
+				hearts_p1[i].setIcon(new ImageIcon(".\\resources\\sem_vida.gif"));
+			
+			
+			if (i < atorJogador.getJogador2().getPontosDeVida())
+				hearts_p2[i].setIcon(new ImageIcon(".\\resources\\heartcontainer.gif"));
+			else
+				hearts_p2[i].setIcon(new ImageIcon(".\\resources\\sem_vida.gif"));
+		}
+	}
 
 	public void clickRolarDados() throws NaoJogandoException {
 		Dado[] dados = atorJogador.clickRolarDados();
