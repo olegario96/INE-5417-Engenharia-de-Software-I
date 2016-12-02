@@ -47,13 +47,6 @@ public class Monstro implements Serializable {
 		return this._invocador;
 	}
 
-	public void destruirMonstro() {
-		this.getPosicao().setOcupante(null);
-		this.setPosicao(null);
-		Jogador jogador = this.getInvocador();
-		jogador.adicionarMonstroDestruido(this);
-	}
-
 	public void setJa_atacou(boolean aM_ja_atacou) {
 		this._ja_atacou = aM_ja_atacou;
 	}
