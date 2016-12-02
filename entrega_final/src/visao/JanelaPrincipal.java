@@ -19,8 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
-
 import modelo.Dado;
 import modelo.Monstro;
 import modelo.Monstro_Com_Habilidade;
@@ -589,6 +587,7 @@ public class JanelaPrincipal {
 				}
 				break;
 			}
+			type = 0;
 		}
 	};
 
@@ -676,7 +675,7 @@ public class JanelaPrincipal {
 		if (posicao.casaVazia()) {
 			JOptionPane.showMessageDialog(null, "Esta casa está vazia!");
 		} else {
-			if ((posicao.getOcupante().getInvocador().compara(this.atorJogador
+			if (!(posicao.getOcupante().getInvocador().compara(this.atorJogador
 					.getJogador1()))) {
 				JOptionPane.showMessageDialog(null,
 						"Este monstro não pertence a você!");
