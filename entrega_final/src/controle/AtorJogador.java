@@ -46,20 +46,24 @@ public class AtorJogador {
 
 	public void receberSolicitacaoDeInicio() {
 		JanelaPrincipal.setNomeLabel1(this.atorNetGames.getProxy()
-				.obterNomeAdversario(1));
+				.obterNomeAdversario(2));
 
 		JanelaPrincipal.setNomeLabel2(this.atorNetGames.getProxy()
-				.obterNomeAdversario(2));
+				.obterNomeAdversario(1));
 		if (ordemUsuario == 2) {
 			JanelaPrincipal.disableButtons();
 		}
 		
 	}
-
-	public void clickConectar(String ip, String nome)
-			throws JahConectadoException, NaoPossivelConectarException,
-			ArquivoMultiplayerException {
-		this.atorNetGames.conectar(ip, nome);
+	
+	public void encerraPartida() {
+		tabuleiro.getJogador1().desabilitaJogador();
+		tabuleiro.getJogador2().desabilitaJogador();
+		tabuleiro.setPartidaEmAndamento(false);
+	}
+	
+	public void mostrarVencedor(String vencedor) {
+		JanelaPrincipal.informaVencedor(vencedor);
 	}
 
 	public void clickAtacar(Monstro monstro, Posicao posicao)
@@ -79,7 +83,26 @@ public class AtorJogador {
 				TipoJogada._atacar, monstro, monstro_alvo, null);
 		monstro.setJa_atacou(true);
 		this.enviarJogada(jogada);
-		this.tabuleiro.avaliaContinuidade();
+		JanelaPrincipal.atualizarInformacoes();
+	}
+	
+//	public void avaliaContinuidade() {
+//		String vencedor = null;
+//		if (jogador_1.getPontosDeVida() == 0) {
+//			jogador_2.setVencedor();
+//			vencedor = jogador_2.getNome();
+//		} else if (jogador_2.getPontosDeVida() == 0) {
+//			jogador_1.setVencedor();
+//			vencedor = jogador_1.getNome();
+//		}
+//		if (vencedor != null)
+//			encerraPartida(vencedor);
+//	}
+
+	public void clickConectar(String ip, String nome)
+			throws JahConectadoException, NaoPossivelConectarException,
+			ArquivoMultiplayerException {
+		this.atorNetGames.conectar(ip, nome);
 	}
 
 	public Dado[] clickRolarDados() throws NaoJogandoException {
@@ -136,10 +159,6 @@ public class AtorJogador {
 
 	public Jogada getJogada() {
 		return this.jogada;
-	}
-
-	public Jogador getVencedor() {
-		return this.tabuleiro.identificaVencedor();
 	}
 
 	public Tabuleiro getTabuleiro() {

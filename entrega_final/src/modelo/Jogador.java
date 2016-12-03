@@ -3,6 +3,8 @@ package modelo;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import visao.JanelaPrincipal;
+
 public class Jogador implements Serializable{
 
 	/**
@@ -56,6 +58,7 @@ public class Jogador implements Serializable{
 
 	public void desabilitaJogador() {
 		this._seu_turno = false;
+		JanelaPrincipal.disableButtons();
 	}
 
 	public void setVencedor() {
@@ -84,13 +87,13 @@ public class Jogador implements Serializable{
 
 	public void adicionarMonstroDestruido(Monstro monstro) {
 		this._monstros.remove(monstro);
-		++(this._monstrosDestruidos);
+		_monstrosDestruidos++;
 		this.avaliaPontosDeVida();
 	}
 
 	public void avaliaPontosDeVida() {
 		if (this._monstrosDestruidos % 3 == 0) {
-			--(this.pontos_de_vida);
+			--pontos_de_vida;
 		}
 	}
 

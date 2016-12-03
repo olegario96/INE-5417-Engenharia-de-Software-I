@@ -24,26 +24,6 @@ public class Tabuleiro {
 		throw new UnsupportedOperationException();
 	}
 
-	public void encerraPartida() {
-		this._jogador1.desabilitaJogador();
-		this._jogador2.desabilitaJogador();
-		this._partida_em_andamento = false;
-		// monstrarFuckingVencedor();
-	}
-
-	public Jogador identificaVencedor() {
-		if (_jogador1.getPontosDeVida() == 0) {
-			_jogador2.setVencedor();
-			return _jogador2;
-		} else if (_jogador2.getPontosDeVida() == 0) {
-			_jogador1.setVencedor();
-			this.encerraPartida();
-			return _jogador1;
-		} else {
-			return null;
-		}
-	}
-
 	public Dado[] getDados() {
 		return this._dados;
 	}
@@ -142,18 +122,15 @@ public class Tabuleiro {
 		throw new UnsupportedOperationException();
 	}
 
-	public void avaliaContinuidade() {
-		if (_jogador1.getPontosDeVida() == 0
-				|| _jogador2.getPontosDeVida() == 0) {
-			this.identificaVencedor();
-		}
-	}
-
 	public boolean partidaEmAndamento() {
 		return this._partida_em_andamento;
 	}
 
 	public Posicao getPosicao(int linha, int coluna) {
 		return this.posicoes[linha][coluna];
+	}
+	
+	public void setPartidaEmAndamento(boolean m_partidaEmAndamento) {
+		this._partida_em_andamento = m_partidaEmAndamento;
 	}
 }
