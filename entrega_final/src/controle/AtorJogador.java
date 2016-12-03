@@ -93,16 +93,6 @@ public class AtorJogador {
 
 	}
 
-	public Monstro comparaAtaqueMonstros(Monstro escolha, Monstro monstroAlvo) {
-		if (escolha.getAtaque() < monstroAlvo.getAtaque()) {
-			return escolha;
-		} else if (escolha.getAtaque() > monstroAlvo.getAtaque()) {
-			return monstroAlvo;
-		} else {
-			return null;
-		}
-	}
-
 	public Jogada getJogada() {
 		return this.jogada;
 	}
@@ -127,7 +117,7 @@ public class AtorJogador {
 			posicao = this.tabuleiro.getPosicao(jogada.getLinha(),
 					jogada.getColuna());
 			Monstro monstro_alvo = posicao.getOcupante();
-			Monstro destruido = this.comparaAtaqueMonstros(monstro_fonte,
+			Monstro destruido = this.tabuleiro.comparaAtaqueMonstros(monstro_fonte,
 					monstro_alvo);
 			tabuleiro.destroiMonstro(destruido, destruido.getPosicao());
 			JanelaPrincipal.atualizarInformacoes();
@@ -219,10 +209,8 @@ public class AtorJogador {
 
 	public void clickAtacar(Monstro monstro, Posicao posicao)
 			throws NaoJogandoException {
-		monstro.getInvocador().diminuiEstrelas(monstro.estrelasParaAtaque());
-		Monstro monstro_alvo = posicao.getOcupante();
-		Monstro destruido = this.comparaAtaqueMonstros(monstro, monstro_alvo);
-
+		
+		Monstro destruido =  this.tabuleiro.atacarMonstro(monstro, jogada.getMonstroAlvo(), posicao);
 		if (destruido == null) {
 			JOptionPane.showMessageDialog(null,
 					"Os dois monstros possuem o mesmo poder\n"
@@ -232,8 +220,8 @@ public class AtorJogador {
 		}
 
 		this.jogada = new Jogada(posicao.getLinha(), posicao.getColuna(),
-				TipoJogada._atacar, monstro, monstro_alvo, null);
-		monstro.setJa_atacou(true);
+				TipoJogada._atacar, monstro, jogada.getMonstroAlvo(), null);
+		
 		this.enviarJogada(jogada);
 		JanelaPrincipal.atualizarInformacoes();
 	}

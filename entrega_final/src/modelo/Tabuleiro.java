@@ -170,4 +170,22 @@ public class Tabuleiro {
 		}
 		return this._dados;
 	}
+	
+	public Monstro atacarMonstro(Monstro monstro_fonte, Monstro monstro_alvo, Posicao posicao) {
+		monstro_fonte.setJa_atacou(true);
+		monstro_fonte.getInvocador().diminuiEstrelas(monstro_fonte.estrelasParaAtaque());
+		monstro_alvo = posicao.getOcupante();
+		Monstro destruido = this.comparaAtaqueMonstros(monstro_fonte, monstro_alvo);
+		return destruido;
+	}
+	
+	public Monstro comparaAtaqueMonstros(Monstro escolha, Monstro monstroAlvo) {
+		if (escolha.getAtaque() < monstroAlvo.getAtaque()) {
+			return escolha;
+		} else if (escolha.getAtaque() > monstroAlvo.getAtaque()) {
+			return monstroAlvo;
+		} else {
+			return null;
+		}
+	}
 }
