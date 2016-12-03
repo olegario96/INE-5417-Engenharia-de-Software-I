@@ -84,13 +84,13 @@ public class Jogador implements Serializable{
 
 	public void adicionarMonstroDestruido(Monstro monstro) {
 		this._monstros.remove(monstro);
-		_monstrosDestruidos++;
+		++(this._monstrosDestruidos);
 		this.avaliaPontosDeVida();
 	}
 
 	public void avaliaPontosDeVida() {
 		if (this._monstrosDestruidos % 3 == 0) {
-			--pontos_de_vida;
+			--(this.pontos_de_vida);
 		}
 	}
 
