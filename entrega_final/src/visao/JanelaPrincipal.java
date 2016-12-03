@@ -171,8 +171,8 @@ public class JanelaPrincipal {
 			hearts_p1[i] = new JLabel();
 			hearts_p2[i] = new JLabel();
 
-			hearts_p1[i].setIcon(new ImageIcon(".\\resources\\heartcontainer.gif"));
-			hearts_p2[i].setIcon(new ImageIcon(".\\resources\\heartcontainer.gif"));
+			hearts_p1[i].setIcon(new ImageIcon("./Resources/heartcontainer.gif"));
+			hearts_p2[i].setIcon(new ImageIcon("./Resources/heartcontainer.gif"));
 
 			hearts_p1[i].setBounds(24 + desloc_1, 60, 64, 60);
 			hearts_p2[i].setBounds(24 + desloc_2, 60, 64, 60);
@@ -396,15 +396,15 @@ public class JanelaPrincipal {
 	public static void atualizaPontosDeVida() {
 		for (int i = 0; i < 3; i++) {
 			if (i < atorJogador.getJogador1().getPontosDeVida())
-				hearts_p1[i].setIcon(new ImageIcon(".\\resources\\heartcontainer.gif"));
+				hearts_p1[i].setIcon(new ImageIcon("./Resources/heartcontainer.gif"));
 			else
-				hearts_p1[i].setIcon(new ImageIcon(".\\resources\\sem_vida.gif"));
+				hearts_p1[i].setIcon(new ImageIcon("./Resources/sem_vida.gif"));
 			
 			
 			if (i < atorJogador.getJogador2().getPontosDeVida())
-				hearts_p2[i].setIcon(new ImageIcon(".\\resources\\heartcontainer.gif"));
+				hearts_p2[i].setIcon(new ImageIcon("./Resources/heartcontainer.gif"));
 			else
-				hearts_p2[i].setIcon(new ImageIcon(".\\resources\\sem_vida.gif"));
+				hearts_p2[i].setIcon(new ImageIcon("./Resources/sem_vida.gif"));
 		}
 	}
 	

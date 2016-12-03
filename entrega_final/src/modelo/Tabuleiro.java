@@ -1,7 +1,5 @@
 package modelo;
 
-import java.util.Vector;
-
 public class Tabuleiro {
 	private Jogador _jogador1;
 	private Jogador _jogador2;
@@ -39,14 +37,19 @@ public class Tabuleiro {
 		return false;
 	}
 
-	public Jogada invocaMonstro(Monstro aMonstro, Posicao posicao) {
-		int linha = posicao.getLinha();
-		int coluna = posicao.getColuna();
-		posicoes[linha][coluna].setOcupante(aMonstro);
-		aMonstro.setPosicao(posicoes[linha][coluna]);
+	public Jogada invocaMonstro(Monstro aMonstro, Posicao posicao,
+			Jogador jogador_1) {
+		posicao = this.getPosicao(posicao.getLinha(), posicao.getColuna());
+		posicao.setOcupante(aMonstro);
+		aMonstro.setPosicao(posicao);
+		aMonstro.setInvocador(jogador_1);
+		aMonstro.getInvocador().adicionaMonstro(aMonstro);
+		Jogada jogada = new Jogada(posicao.getLinha(), posicao.getColuna(),
+				TipoJogada._invocarMonstro, aMonstro, null, null);
 
-		return (new Jogada(posicao.getLinha(), posicao.getColuna(),
-				TipoJogada._invocarMonstro, aMonstro, null, null));
+		aMonstro.getInvocador().diminuiEstrelas(
+				aMonstro.estrelasParaInvocacao());
+		return jogada;
 	}
 
 	public TipoJogada mudaJogador() {
@@ -58,14 +61,28 @@ public class Tabuleiro {
 	}
 
 	public Jogada movimentaMonstro(Monstro aMonstro, Posicao posicao) {
-		Posicao antiga = this.getPosicao(aMonstro.getPosicao().getLinha(), aMonstro.getPosicao().getColuna());
+		aMonstro.setJaMoveu(true);
+		Monstro monstro_fonte = new Monstro(aMonstro.getAtaque(),
+				aMonstro.getPosicao(), aMonstro.estrelasParaInvocacao(),
+				aMonstro.estrelasParaMovimento(),
+				aMonstro.estrelasParaAtaque(), aMonstro.getInvocador(),
+				aMonstro.getTipoMonstro());
+		
+		Jogada jogada = new Jogada(posicao.getLinha(), posicao.getColuna(),
+				TipoJogada._moverMonstro, monstro_fonte, null, null);
+		
+		Posicao antiga = this.getPosicao(aMonstro.getPosicao().getLinha(),
+				aMonstro.getPosicao().getColuna());
+		
 		antiga.setOcupante(null);
 		posicao.setOcupante(aMonstro);
 		aMonstro.setPosicao(posicao);
-		return (new Jogada(posicao.getLinha(), posicao.getColuna(),
-				TipoJogada._moverMonstro, aMonstro, null, null));
+		aMonstro.getInvocador().diminuiEstrelas(
+				aMonstro.estrelasParaMovimento());
+		
+		return jogada;
 	}
-	
+
 	public void destroiMonstro(Monstro monstro, Posicao posicao) {
 		posicao.setOcupante(null);
 		monstro.setPosicao(null);
@@ -118,8 +135,21 @@ public class Tabuleiro {
 		return this._jogador2;
 	}
 
-	public void usarHabilidade(Monstro_Com_Habilidade aMonstro) {
-		throw new UnsupportedOperationException();
+	public Jogada usarHabilidade(Monstro_Com_Habilidade aMonstro) {
+		switch (aMonstro.getHabilidade()) {
+		case _atacar:
+			aMonstro.setJa_atacou(false);
+			break;
+		case _moverMonstro:
+			aMonstro.setJaMoveu(false);
+			break;
+		default:
+			aMonstro.getInvocador().setDados(false);
+		}
+		aMonstro.setJaUsouHabilidade(true);
+		Jogada jogada = new Jogada(0, 0, TipoJogada._usarHabilidade, aMonstro, null,
+				null);
+		return jogada;
 	}
 
 	public boolean partidaEmAndamento() {
@@ -129,8 +159,15 @@ public class Tabuleiro {
 	public Posicao getPosicao(int linha, int coluna) {
 		return this.posicoes[linha][coluna];
 	}
-	
+
 	public void setPartidaEmAndamento(boolean m_partidaEmAndamento) {
 		this._partida_em_andamento = m_partidaEmAndamento;
+	}
+	
+	public Dado[] rolarDados() {
+		for (int i = 0; i < _dados.length; i++) {
+			this._dados[i].rolaDado();
+		}
+		return this._dados;
 	}
 }
