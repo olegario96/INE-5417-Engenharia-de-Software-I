@@ -3,6 +3,9 @@ package visao;
 import javax.swing.JLabel;
 
 public class Casa extends JLabel {
+	
+	private static final long serialVersionUID = 887379446407433088L;
+	
 	int linha;
 	int coluna;
 	

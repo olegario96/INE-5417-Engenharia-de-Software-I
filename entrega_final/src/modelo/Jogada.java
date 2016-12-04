@@ -22,29 +22,13 @@ public class Jogada implements br.ufsc.inf.leobr.cliente.Jogada, Serializable {
 		this._dados = _dados;
 	}
 	
-	public int getTipo() {
-		if (this._tipo == TipoJogada._rolar_dados) {
-			return 0;
-		} else if (this._tipo == TipoJogada._atacar) {
-			return 1;
-		} else if (this._tipo == TipoJogada._invocarMonstro) {
-			return 2;
-		} else if (this._tipo == TipoJogada._moverMonstro) {
-			return 3;
-		} else if (this._tipo == TipoJogada._usarHabilidade){
-			return 4;
-		} else {
-			return 5;
-		}
-	}
-
 	public int getLinha() {
 		return this._linha;
 	}
 
 	public int getColuna() {
 		return this._coluna;
-	}
+	}	
 
 	public TipoJogada getTipoJogada() {
 		return this._tipo;

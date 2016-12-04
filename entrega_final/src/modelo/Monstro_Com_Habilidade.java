@@ -15,21 +15,7 @@ public class Monstro_Com_Habilidade extends Monstro {
 				_custo_ataque, _invocador, monstro);
 		this._habilidade = _habilidade;
 	}
-
-	public String escreverHabilidade() {
-		if (_habilidade == TipoJogada._atacar) {
-			return "Pode atacar duas vezes";
-		} else if (_habilidade == TipoJogada._moverMonstro) {
-			return "Pode andar duas vezes";
-		} else {
-			return "Permite ao jogador rolar os dados mais uma vez";
-		}
-	}
 	
-	public TipoJogada getHabilidade() {
-		return this._habilidade;
-	}
-
 	@Override
 	public void reiniciaMonstro() {
 		this.setJa_atacou(false);
@@ -37,6 +23,10 @@ public class Monstro_Com_Habilidade extends Monstro {
 		this.setJaUsouHabilidade(false);
 	}
 
+	public TipoJogada getHabilidade() {
+		return this._habilidade;
+	}
+	
 	public boolean getJaUsouHabilidade() {
 		return this._ja_usou_habilidade;
 	}

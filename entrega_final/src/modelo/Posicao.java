@@ -4,13 +4,7 @@ import java.io.Serializable;
 
 public class Posicao implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6576237270596288427L;
-	/**
-	 * 
-	 */
 
 	private Monstro _ocupante;
 	private int linha;
@@ -22,10 +16,6 @@ public class Posicao implements Serializable{
 		this.coluna = coluna;
 	}
 
-/*	public boolean verificaPosicao() {
-
-	}*/
-
 	public boolean casaVazia() {
 		return this.getOcupante() == null;
 	}
@@ -34,15 +24,15 @@ public class Posicao implements Serializable{
 		return this._ocupante;
 	}
 	
-	public void setOcupante(Monstro monstro) {
-		this._ocupante = monstro;
-	}
-	
 	public int getLinha() {
 		return this.linha;
 	}
 	
 	public int getColuna() {
 		return this.coluna;
+	}
+	
+	public void setOcupante(Monstro monstro) {
+		this._ocupante = monstro;
 	}
 }

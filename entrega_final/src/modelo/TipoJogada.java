@@ -1,5 +1,5 @@
 package modelo;
 
 public enum TipoJogada {
-		_rolar_dados, _atacar, _invocarMonstro, _moverMonstro, _usarHabilidade, _darVez, _clickMonstro;
+		ROLAR_DADOS, ATACAR, INVOCAR_MONSTRO, MOVER_MONSTRO, USAR_HABILIDADE, DAR_VEZ, CLICK_MONSTRO;
 	}

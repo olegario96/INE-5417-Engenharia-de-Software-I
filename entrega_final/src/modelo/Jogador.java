@@ -3,14 +3,10 @@ package modelo;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import visao.JanelaPrincipal;
+public class Jogador implements Serializable {
 
-public class Jogador implements Serializable{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6464342001908889999L;
+
 	private String _nome;
 	private int id;
 	private boolean _seu_turno;
@@ -20,26 +16,24 @@ public class Jogador implements Serializable{
 	private int _numEstrelas;
 	private int _monstrosDestruidos;
 	private int pontos_de_vida;
-	private int numero_monstros;
-	
+
 	public Jogador(String _nome, int id) {
 		this._nome = _nome;
 		this.pontos_de_vida = 3;
 		this._monstrosDestruidos = 0;
 		this._numEstrelas = 0;
 		this._monstros = new ArrayList<Monstro>();
-		this.numero_monstros = 0;
 		this.id = id;
 		this._seu_turno = false;
-		this._ja_rolou_dados = false; 
+		this._ja_rolou_dados = false;
 		this._vencedor = false;
 	}
 
 	public TipoJogada darAVez() {
 		this.resetarMonstros();
-		this.resetarDados();
+		this.setDados(false);
 		this.desabilitaJogador();
-		return TipoJogada._darVez;
+		return TipoJogada.DAR_VEZ;
 	}
 
 	public void resetarMonstros() {
@@ -47,42 +41,21 @@ public class Jogador implements Serializable{
 			m.reiniciaMonstro();
 		}
 	}
-	
-	public void setDados(boolean dados) {
-		this._ja_rolou_dados = dados;
-	}
-
-	public void resetarDados() {
-		this._ja_rolou_dados = false;
-	}
-
-	public void desabilitaJogador() {
-		this._seu_turno = false;
-		JanelaPrincipal.disableButtons();
-	}
-
-	public void setVencedor() {
-		this._vencedor = true;
-	}
-
-	public boolean getJaRolou() {
-		return this._ja_rolou_dados;
-	}
 
 	public void adicionaMonstro(Monstro aEscolha) {
 		this._monstros.add(aEscolha);
 	}
 
+	public void desabilitaJogador() {
+		this._seu_turno = false;
+	}
+
+	public void adicionaEstrelas(int estrelas) {
+		this._numEstrelas += estrelas;
+	}
+
 	public void diminuiEstrelas(int aEstrelas) {
 		this._numEstrelas = this._numEstrelas - aEstrelas;
-	}
-
-	public boolean possuiMonstro() {
-		return (_monstros.size() > 0);
-	}
-
-	public void setSeu_turno(boolean aM_seu_turno) {
-		this._seu_turno = aM_seu_turno;
 	}
 
 	public void adicionarMonstroDestruido(Monstro monstro) {
@@ -97,50 +70,64 @@ public class Jogador implements Serializable{
 		}
 	}
 
-	public ArrayList<String> habilidades() {
-		ArrayList<String> habilidades = new ArrayList<String>();
-		for(Monstro m : _monstros) {
-			if (m instanceof Monstro_Com_Habilidade) {
-				Monstro_Com_Habilidade m_h = (Monstro_Com_Habilidade) m;
-				habilidades.add(m_h.escreverHabilidade());
+	public boolean compara(Jogador jogador) {
+		return this.getId() == jogador.getId();
+	}
+
+	public boolean possuiMonstro() {
+		return (_monstros.size() > 0);
+	}
+
+	public boolean possui_monstro_com_habilidade() {
+		for (Monstro monstro : _monstros) {
+			if (monstro instanceof Monstro_Com_Habilidade) {
+				return true;
 			}
 		}
-		return habilidades;
+		return false;
+	}
+
+	public String getNome() {
+		return this._nome;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public boolean getSeuTurno() {
+		return this._seu_turno;
+	}
+	
+	public boolean getVencedor() {
+		return this._vencedor;
+	}
+
+	public boolean getJaRolou() {
+		return this._ja_rolou_dados;
+	}
+
+	public int getEstrelas() {
+		return this._numEstrelas;
 	}
 
 	public int getPontosDeVida() {
 		return this.pontos_de_vida;
 	}
-	
-	public boolean getSeuTurno() {
-		return this._seu_turno;
-	}
 
-	public ArrayList<Monstro> getMonstros() {
-		return this._monstros;
-	}
-	
-	public String getNome() {
-		return this._nome;
-	}
-	
 	public void setName(String nome) {
 		this._nome = nome;
 	}
 
-	public boolean compara(Jogador jogador) {
-		return this.getId() == jogador.getId();
+	public void setSeu_turno(boolean aM_seu_turno) {
+		this._seu_turno = aM_seu_turno;
 	}
 	
-	public int getId() {
-		return this.id;
+	public void setVencedor() {
+		this._vencedor = true;
 	}
 	
-	public void adicionaEstrelas(int estrelas) {
-		this._numEstrelas += estrelas;
-	}
-	
-	public int getEstrelas() {
-		return this._numEstrelas;
+	public void setDados(boolean dados) {
+		this._ja_rolou_dados = dados;
 	}
 }

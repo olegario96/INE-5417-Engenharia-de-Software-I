@@ -28,11 +28,11 @@ public class AtorJogador {
 		if (posicao == 1) {
 			this.jogador_1 = new Jogador(nome_p1, 1);
 			this.jogador_2 = new Jogador(nome_p2, 2);
-			ordemUsuario = 1;
+			this.ordemUsuario = 1;
 			this.jogador_1.setSeu_turno(true);
 			this.jogador_2.setSeu_turno(false);
 		} else {
-			ordemUsuario = 2;
+			this.ordemUsuario = 2;
 			this.jogador_1 = new Jogador(nome_p1, 2);
 			this.jogador_2 = new Jogador(nome_p2, 1);
 			this.jogador_1.setSeu_turno(false);
@@ -50,135 +50,28 @@ public class AtorJogador {
 
 		JanelaPrincipal.setNomeLabel2(this.atorNetGames.getProxy()
 				.obterNomeAdversario(1));
-		if (ordemUsuario == 2) {
+		if (this.ordemUsuario == 2) {
 			JanelaPrincipal.disableButtons();
 		}
 
 	}
 
 	public void encerraPartida() {
-		tabuleiro.getJogador1().desabilitaJogador();
-		tabuleiro.getJogador2().desabilitaJogador();
-		tabuleiro.setPartidaEmAndamento(false);
+		this.tabuleiro.getJogador1().desabilitaJogador();
+		this.tabuleiro.getJogador2().desabilitaJogador();
+		this.tabuleiro.setPartidaEmAndamento(false);
 	}
 
 	public void mostrarVencedor(String vencedor) {
 		JanelaPrincipal.informaVencedor(vencedor);
 	}
 
-	// public void avaliaContinuidade() {
-	// String vencedor = null;
-	// if (jogador_1.getPontosDeVida() == 0) {
-	// jogador_2.setVencedor();
-	// vencedor = jogador_2.getNome();
-	// } else if (jogador_2.getPontosDeVida() == 0) {
-	// jogador_1.setVencedor();
-	// vencedor = jogador_1.getNome();
-	// }
-	// if (vencedor != null)
-	// encerraPartida(vencedor);
-	// }
-
 	public void clickConectar(String ip, String nome)
 			throws JahConectadoException, NaoPossivelConectarException,
 			ArquivoMultiplayerException {
 		this.atorNetGames.conectar(ip, nome);
 	}
-
-	public Monstro escolheMonstro() {
-		return null;
-	}
-
-	public void clickCasa() {
-
-	}
-
-	public Jogada getJogada() {
-		return this.jogada;
-	}
-
-	public Tabuleiro getTabuleiro() {
-		return this.tabuleiro;
-	}
-
-	/*
-	 * public boolean emAndamento() { }
-	 */
-
-	public void enviarJogada(Jogada jogada) throws NaoJogandoException {
-		this.atorNetGames.enviarJogada(jogada);
-	}
-
-	public void receberJogada(Jogada jogada) throws NaoJogandoException {
-		Monstro monstro_fonte = jogada.getMonstroFonte();
-		Posicao posicao;
-		switch (jogada.getTipoJogada()) {
-		case _atacar:
-			posicao = this.tabuleiro.getPosicao(jogada.getLinha(),
-					jogada.getColuna());
-			Monstro monstro_alvo = posicao.getOcupante();
-			Monstro destruido = this.tabuleiro.comparaAtaqueMonstros(monstro_fonte,
-					monstro_alvo);
-			tabuleiro.destroiMonstro(destruido, destruido.getPosicao());
-			JanelaPrincipal.atualizarInformacoes();
-			break;
-
-		case _moverMonstro:
-			posicao = this.tabuleiro.getPosicao(jogada.getLinha(),
-					jogada.getColuna());
-			this.tabuleiro.movimentaMonstro(monstro_fonte, posicao);
-			JanelaPrincipal.atualizarInformacoes();
-			break;
-
-		case _usarHabilidade:
-			((Monstro_Com_Habilidade) monstro_fonte).getHabilidade();
-			JOptionPane.showMessageDialog(null, "Oponente usou habilidade!");
-			break;
-
-		case _invocarMonstro:
-			posicao = this.tabuleiro.getPosicao(jogada.getLinha(),
-					jogada.getColuna());
-			this.tabuleiro.invocaMonstro(monstro_fonte, posicao,
-					monstro_fonte.getInvocador());
-			monstro_fonte.setInvocador(jogador_2);
-			monstro_fonte.getInvocador().adicionaMonstro(monstro_fonte);
-
-			monstro_fonte.getInvocador().diminuiEstrelas(
-					monstro_fonte.estrelasParaInvocacao());
-			JanelaPrincipal.atualizarInformacoes();
-			break;
-
-		case _darVez:
-			this.getJogador1().setSeu_turno(true);
-			this.jogador_2.setSeu_turno(false);
-			JanelaPrincipal.enableButtons();
-			JOptionPane.showMessageDialog(null, "Sua vez!");
-			break;
-
-		default:
-			Dado[] dados = jogada.getDados();
-			JOptionPane.showMessageDialog(
-					null,
-					"Seu adversário rolou os dado! Ele tirou "
-							+ dados[0].getFaceAtual() + " "
-							+ dados[1].getFaceAtual() + " " + dados[2].getFaceAtual());
-			break;
-		}
-
-	}
-
-	public Jogador getJogador1() {
-		return this.jogador_1;
-	}
-
-	public Jogador getJogador2() {
-		return this.jogador_2;
-	}
-
-	public AtorNetGames getAtorNetGames() {
-		return this.atorNetGames;
-	}
-
+	
 	public Dado[] clickRolarDados() throws NaoJogandoException {
 		Dado[] dados = null;
 		if (!(this.getJogador1().getJaRolou())) {
@@ -187,7 +80,7 @@ public class AtorJogador {
 				dados[i].rolaDado();
 				this.getJogador1().adicionaEstrelas(dados[i].getFaceAtual());
 			}
-			this.jogada = new Jogada(0, 0, TipoJogada._rolar_dados, null, null,
+			this.jogada = new Jogada(0, 0, TipoJogada.ROLAR_DADOS, null, null,
 					dados);
 			this.atorNetGames.enviarJogada(jogada);
 		}
@@ -209,8 +102,9 @@ public class AtorJogador {
 
 	public void clickAtacar(Monstro monstro, Posicao posicao)
 			throws NaoJogandoException {
-		
-		Monstro destruido =  this.tabuleiro.atacarMonstro(monstro, jogada.getMonstroAlvo(), posicao);
+
+		Monstro destruido = this.tabuleiro.atacarMonstro(monstro,
+				jogada.getMonstroAlvo(), posicao);
 		if (destruido == null) {
 			JOptionPane.showMessageDialog(null,
 					"Os dois monstros possuem o mesmo poder\n"
@@ -220,8 +114,8 @@ public class AtorJogador {
 		}
 
 		this.jogada = new Jogada(posicao.getLinha(), posicao.getColuna(),
-				TipoJogada._atacar, monstro, jogada.getMonstroAlvo(), null);
-		
+				TipoJogada.ATACAR, monstro, jogada.getMonstroAlvo(), null);
+
 		this.enviarJogada(jogada);
 		JanelaPrincipal.atualizarInformacoes();
 	}
@@ -238,7 +132,57 @@ public class AtorJogador {
 		this.enviarJogada(jogada);
 	}
 
+
+	public void enviarJogada(Jogada jogada) throws NaoJogandoException {
+		this.atorNetGames.enviarJogada(jogada);
+	}
+	
+	public void receberJogada(Jogada jogada) throws NaoJogandoException {
+		this.tabuleiro.reproduzirJogada(jogada, this.jogador_2);
+		switch (jogada.getTipoJogada()) {
+		case DAR_VEZ:
+			JOptionPane.showMessageDialog(null, "Sua vez!");
+			break;
+
+		case USAR_HABILIDADE:
+			JOptionPane.showMessageDialog(null, "Oponente usou habilidade!");
+			break;
+
+		case ROLAR_DADOS:
+			Dado[] dados = jogada.getDados();
+			JOptionPane.showMessageDialog(
+					null,
+					"Seu adversário rolou os dado! Ele tirou "
+							+ dados[0].getFaceAtual() + " "
+							+ dados[1].getFaceAtual() + " "
+							+ dados[2].getFaceAtual());
+			
+		default:
+			break;
+		}
+	}
+	
 	public int getOrdemUsuario() {
 		return this.ordemUsuario;
+	}
+	
+	public AtorNetGames getAtorNetGames() {
+		return this.atorNetGames;
+	}
+
+	public Tabuleiro getTabuleiro() {
+		return this.tabuleiro;
+	}
+
+	public Jogador getJogador1() {
+		return this.jogador_1;
+	}
+
+	public Jogador getJogador2() {
+		return this.jogador_2;
+	}
+
+	public Jogada getJogada() {
+		return this.jogada;
 	}
 }

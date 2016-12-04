@@ -35,43 +35,27 @@ public class Monstro implements Serializable {
 		++id_i;
 	}
 
-	public boolean getJaMoveu() {
-		return _ja_moveu;
-	}
-
-	public void setJaMoveu(boolean aMoveu) {
-		this._ja_moveu = aMoveu;
-	}
-
-	public Jogador getInvocador() {
-		return this._invocador;
-	}
-
-	public void setJa_atacou(boolean aM_ja_atacou) {
-		this._ja_atacou = aM_ja_atacou;
-	}
-
-	public boolean getJa_atacou() {
-		return this._ja_atacou;
-	}
-
-	public void monstroDestruido() {
-		throw new UnsupportedOperationException();
-	}
-
 	public void reiniciaMonstro() {
 		this.setJa_atacou(false);
 		this.setJaMoveu(false);
 	}
-
-	public void ataqueMonstro_Posicao_posicao_() {
-		throw new UnsupportedOperationException();
+	
+	public int getAtaque() {
+		return this._ataque;
 	}
-
+	
 	public Posicao getPosicao() {
 		return this._posicao;
 	}
-
+	
+	public boolean getJaMoveu() {
+		return _ja_moveu;
+	}
+	
+	public boolean getJa_atacou() {
+		return this._ja_atacou;
+	}
+	
 	public int estrelasParaInvocacao() {
 		return this._custoInvocacao;
 	}
@@ -84,6 +68,10 @@ public class Monstro implements Serializable {
 		return this._custo_ataque;
 	}
 
+	public Jogador getInvocador() {
+		return this._invocador;
+	}
+	
 	public int getId() {
 		return this.id;
 	}
@@ -91,15 +79,19 @@ public class Monstro implements Serializable {
 	public int getTipoMonstro() {
 		return this.monstro;
 	}
-
-	public int getAtaque() {
-		return this._ataque;
-	}
-
+	
 	public void setPosicao(Posicao posicao) {
 		this._posicao = posicao;
 	}
-	
+
+	public void setJaMoveu(boolean aMoveu) {
+		this._ja_moveu = aMoveu;
+	}
+
+	public void setJa_atacou(boolean aM_ja_atacou) {
+		this._ja_atacou = aM_ja_atacou;
+	}	
+
 	public void setInvocador(Jogador jogador) {
 		this._invocador = jogador;
 	}

@@ -1,6 +1,6 @@
 package controle;
 
-import visao.*;
+import visao.JanelaPrincipal;;
 
 public class Main {
 
